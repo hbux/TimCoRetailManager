@@ -33,8 +33,8 @@ namespace TRMDesktopUI.Helpers
         public async Task<AuthenticatedUser> Authenticate(string username, string password)
         {
             // Authenticating the client by sending the values to the api and returning the authentication
-            // token
-            var data = new FormUrlEncodedContent(new[]
+            // token and username
+            var data = new FormUrlEncodedContent(new KeyValuePair<string, string>[]
             {
                 new KeyValuePair<string, string>("grant_type", "password"),
                 new KeyValuePair<string, string>("username", username),

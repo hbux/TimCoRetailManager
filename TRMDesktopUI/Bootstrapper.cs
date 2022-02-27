@@ -21,6 +21,7 @@ namespace TRMDesktopUI
         {
             Initialize();
 
+            // Refer to ApiHelper.cs > Stack Overflow link
             ConventionManager.AddElementConvention<PasswordBox>(
             PasswordBoxHelper.BoundPasswordProperty,
             "Password",
@@ -48,7 +49,7 @@ namespace TRMDesktopUI
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            // Runs this ViewMdodel on start-up as the base view
+            // Runs this ViewModel on start-up as the base view
             // This is similar to right-clicking a project and 'set project as start-up'
             DisplayRootViewFor<ShellViewModel>();
         }
