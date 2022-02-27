@@ -14,6 +14,7 @@ namespace TRMDesktopUI.ViewModels
         // refer to https://stackoverflow.com/questions/30631522/caliburn-micro-support-for-passwordbox
         private string _userName;
         private string _password;
+        private string _errorMessage;
         private IApiHelper _apiHelper;
 
         public LoginViewModel(IApiHelper apiHelper)
@@ -61,15 +62,43 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
+        public bool IsErrorVisible
+        {
+            get
+            {
+                if (ErrorMessage?.Length > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get
+            {
+                return _errorMessage;
+            }
+            set
+            {
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+                NotifyOfPropertyChange(() => IsErrorVisible);
+            }
+        }
+
         public async Task LogIn()
         {
             try
             {
+                ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
             }
             catch (Exception ex)
             {
-
+                ErrorMessage = ex.Message;
             }
         }
     }
