@@ -13,6 +13,14 @@ namespace TRMDesktopUI.Library.Api
         private HttpClient _apiClient;
         private ILoggedInUserModel _user;
 
+        public HttpClient ApiClient
+        {
+            get
+            {
+                return _apiClient;
+            }
+        }
+
         public ApiHelper(ILoggedInUserModel user)
         {
             InitializeClient();
