@@ -72,8 +72,10 @@ namespace TRMDesktopUI.Library.Api
                     _user.EmailAddress = result.EmailAddress;
                     _user.CreatedDate = result.CreatedDate;
                 }
-
-                throw new Exception(response.ReasonPhrase);
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
             }
         }
     }

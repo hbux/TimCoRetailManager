@@ -12,7 +12,7 @@ namespace TRMDesktopUI.ViewModels
     {
         private BindingList<string> _products;
         private BindingList<string> _cart;
-        private string _itemQuantity;
+        private int _itemQuantity;
         
         public BindingList<string> Products
         {
@@ -40,7 +40,7 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public string ItemQuantity
+        public int ItemQuantity
         {
             get
             {
@@ -57,7 +57,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                if ()
+                if (ItemQuantity > 0)
                 {
                     return true;
                 }
@@ -70,11 +70,6 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                if ()
-                {
-                    return true;
-                }
-
                 return false;
             }
         }
@@ -83,11 +78,6 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                if (_cart.Count > 0)
-                {
-                    return true;
-                }
-
                 return false;
             }
         }
