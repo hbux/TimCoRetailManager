@@ -14,12 +14,16 @@ namespace TRMDesktopUI.ViewModels
     {
         private IProductEndpoint _productEndpoint;
         private BindingList<ProductModel> _products;
-        private BindingList<string> _cart;
+        private BindingList<CartItemModel> _cart;
+        private ProductModel _selectedProduct;
         private int _itemQuantity;
 
         public SalesViewModel(IProductEndpoint productEndpoint)
         {
             _productEndpoint = productEndpoint;
+            _cart = new BindingList<CartItemModel>();
+
+            _itemQuantity = 1;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -46,7 +50,7 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public BindingList<string> Cart
+        public BindingList<CartItemModel> Cart
         {
             get
             {
@@ -56,6 +60,20 @@ namespace TRMDesktopUI.ViewModels
             {
                 _cart = value;
                 NotifyOfPropertyChange(() => Cart);
+            }
+        }
+
+        public ProductModel SelectedProduct
+        {
+            get
+            {
+                return _selectedProduct;
+            }
+            set
+            {
+                _selectedProduct = value;
+                NotifyOfPropertyChange(() => SelectedProduct);
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
 
@@ -69,6 +87,7 @@ namespace TRMDesktopUI.ViewModels
             {
                 _itemQuantity = value;
                 NotifyOfPropertyChange(() => ItemQuantity);
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
 
@@ -76,7 +95,7 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
-                if (ItemQuantity > 0)
+                if (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
                 {
                     return true;
                 }
@@ -105,7 +124,14 @@ namespace TRMDesktopUI.ViewModels
         { 
             get
             {
-                return "$0.00";
+                decimal subTotal = 0;
+
+                foreach (CartItemModel item in Cart)
+                {
+                    subTotal += (item.Product.RetailPrice * item.QuantityInCart);
+                }
+
+                return subTotal.ToString("C");
             }
         }
 
@@ -127,12 +153,36 @@ namespace TRMDesktopUI.ViewModels
 
         public void AddToCart()
         {
-            
+            CartItemModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+
+            if (existingItem != null)
+            {
+                existingItem.QuantityInCart += ItemQuantity;
+
+                Cart.Remove(existingItem);
+                Cart.Add(existingItem);
+            }
+            else
+            {
+                CartItemModel item = new CartItemModel()
+                {
+                    Product = _selectedProduct,
+                    QuantityInCart = _itemQuantity,
+                };
+
+                Cart.Add(item);
+            }
+
+            SelectedProduct.QuantityInStock -= ItemQuantity;
+            ItemQuantity = 1;
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Cart);
         }
 
         public void RemoveFromCart()
         {
-
+            NotifyOfPropertyChange(() => SubTotal);
         }
 
         public void CheckOut()
