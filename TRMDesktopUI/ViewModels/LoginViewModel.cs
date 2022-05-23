@@ -10,8 +10,8 @@ namespace TRMDesktopUI.ViewModels
     {
         // Error setting the value of password within a <PasswordBox> on the LoginView.xaml
         // refer to https://stackoverflow.com/questions/30631522/caliburn-micro-support-for-passwordbox
-        private string _userName;
-        private string _password;
+        private string _userName = "b7012116@my.shu.ac.uk";
+        private string _password = "12345Hh!";
         private string _errorMessage;
         private IApiHelper _apiHelper;
         private IEventAggregator _events;
