@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
+using TRMDesktopUI.Models;
 
 namespace TRMDesktopUI.ViewModels
 {
@@ -16,17 +18,20 @@ namespace TRMDesktopUI.ViewModels
         private IProductEndpoint _productEndpoint;
         private ISaleEndpoint _saleEndpoint;
         private IConfigHelper _configHelper;
-        private BindingList<ProductModel> _products;
-        private BindingList<CartItemModel> _cart;
-        private ProductModel _selectedProduct;
+        private IMapper _mapper;
+        private BindingList<ProductDisplayModel> _products;
+        private BindingList<CartItemDisplayModel> _cart;
+        private ProductDisplayModel _selectedProduct;
         private int _itemQuantity;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, ISaleEndpoint saleEndpoint, IConfigHelper configHelper)
+        public SalesViewModel(IProductEndpoint productEndpoint, ISaleEndpoint saleEndpoint, 
+            IConfigHelper configHelper, IMapper mapper)
         {
             _productEndpoint = productEndpoint;
             _saleEndpoint = saleEndpoint;
             _configHelper = configHelper;
-            _cart = new BindingList<CartItemModel>();
+            _mapper = mapper;
+            _cart = new BindingList<CartItemDisplayModel>();
 
             _itemQuantity = 1;
         }
@@ -39,10 +44,11 @@ namespace TRMDesktopUI.ViewModels
 
         private async Task LoadProducts()
         {
-            Products = new BindingList<ProductModel>(await _productEndpoint.GetAll());
+            var products = _mapper.Map<List<ProductDisplayModel>>(await _productEndpoint.GetAll());
+            Products = new BindingList<ProductDisplayModel>(products);
         }
         
-        public BindingList<ProductModel> Products
+        public BindingList<ProductDisplayModel> Products
         {
             get
             {
@@ -55,7 +61,7 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public BindingList<CartItemModel> Cart
+        public BindingList<CartItemDisplayModel> Cart
         {
             get
             {
@@ -68,7 +74,7 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
-        public ProductModel SelectedProduct
+        public ProductDisplayModel SelectedProduct
         {
             get
             {
@@ -182,18 +188,15 @@ namespace TRMDesktopUI.ViewModels
 
         public void AddToCart()
         {
-            CartItemModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+            CartItemDisplayModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
 
             if (existingItem != null)
             {
                 existingItem.QuantityInCart += ItemQuantity;
-
-                Cart.Remove(existingItem);
-                Cart.Add(existingItem);
             }
             else
             {
-                CartItemModel item = new CartItemModel()
+                CartItemDisplayModel item = new CartItemDisplayModel()
                 {
                     Product = _selectedProduct,
                     QuantityInCart = _itemQuantity,
@@ -222,7 +225,7 @@ namespace TRMDesktopUI.ViewModels
         {
             SaleModel sale = new SaleModel();
 
-            foreach (CartItemModel item in Cart)
+            foreach (CartItemDisplayModel item in Cart)
             {
                 sale.SaleDetails.Add(new SaleDetailModel()
                 {

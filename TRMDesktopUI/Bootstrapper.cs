@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using TRMDesktopUI.Helpers;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
+using TRMDesktopUI.Models;
 using TRMDesktopUI.ViewModels;
 
 namespace TRMDesktopUI
@@ -31,12 +33,25 @@ namespace TRMDesktopUI
             "PasswordChanged");
         }
 
+        private IMapper ConfigureAutomapper()
+        {
+            var config = new MapperConfiguration(autoMapperConfig =>
+            {
+                autoMapperConfig.CreateMap<ProductModel, ProductDisplayModel>();
+                autoMapperConfig.CreateMap<CartItemModel, CartItemDisplayModel>();
+            });
+
+            var mapper = config.CreateMapper();
+
+            return mapper;
+        }
+
         protected override void Configure()
         {
+            _container.Instance(ConfigureAutomapper());
             _container.Instance(_container)
                 .PerRequest<IProductEndpoint, ProductEndpoint>()
                 .PerRequest<ISaleEndpoint, SaleEndpoint>();
-
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
