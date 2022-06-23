@@ -22,6 +22,7 @@ namespace TRMDesktopUI.ViewModels
         private BindingList<ProductDisplayModel> _products;
         private BindingList<CartItemDisplayModel> _cart;
         private ProductDisplayModel _selectedProduct;
+        private CartItemDisplayModel _selectedCartItem;
         private int _itemQuantity;
 
         public SalesViewModel(IProductEndpoint productEndpoint, ISaleEndpoint saleEndpoint, 
@@ -88,6 +89,20 @@ namespace TRMDesktopUI.ViewModels
             }
         }
 
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get
+            {
+                return _selectedCartItem;
+            }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
+
         public int ItemQuantity
         {
             get
@@ -119,6 +134,11 @@ namespace TRMDesktopUI.ViewModels
         {
             get
             {
+                if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
+                {
+                    return true;
+                }
+
                 return false;
             }
         }
@@ -216,6 +236,17 @@ namespace TRMDesktopUI.ViewModels
 
         public void RemoveFromCart()
         {
+            SelectedCartItem.Product.QuantityInStock += 1;
+
+            if (SelectedCartItem.QuantityInCart > 1)
+            {
+                SelectedCartItem.QuantityInCart -= 1;
+            }
+            else
+            {
+                Cart.Remove(SelectedCartItem);
+            }
+
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
