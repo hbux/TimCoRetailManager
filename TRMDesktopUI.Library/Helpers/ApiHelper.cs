@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using TRMDesktopUI.Library.Models;
 
-namespace TRMDesktopUI.Library.Api
+namespace TRMDesktopUI.Library.Helpers
 {
     public class ApiHelper : IApiHelper
     {
@@ -58,6 +58,11 @@ namespace TRMDesktopUI.Library.Api
 
                 throw new Exception(response.ReasonPhrase);
             }
+        }
+
+        public void LogOffUser()
+        {
+            _apiClient.DefaultRequestHeaders.Clear();
         }
 
         public async Task GetLoggedInUserInfo(string token)

@@ -15,13 +15,13 @@ namespace TRMDesktopUI.Library.Models
         public string EmailAddress { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public void LogOffUser()
+        public void ResetUser()
         {
-            Token = String.Empty;
-            Id = String.Empty;
-            FirstName = String.Empty;   
-            LastName = String.Empty;
-            EmailAddress = String.Empty;
+            Token = string.Empty;
+            Id = string.Empty;
+            FirstName = string.Empty;   
+            LastName = string.Empty;
+            EmailAddress = string.Empty;
             CreatedDate = DateTime.MinValue;
         }
     }
