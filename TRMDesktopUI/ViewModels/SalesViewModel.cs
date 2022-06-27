@@ -3,9 +3,11 @@ using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TRMDesktopUI.Library.Api;
 using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
@@ -19,6 +21,8 @@ namespace TRMDesktopUI.ViewModels
         private ISaleEndpoint _saleEndpoint;
         private IConfigHelper _configHelper;
         private IMapper _mapper;
+        private StatusInfoViewModel _statusInfo;
+        private IWindowManager _windowManager;
         private BindingList<ProductDisplayModel> _products;
         private BindingList<CartItemDisplayModel> _cart;
         private ProductDisplayModel _selectedProduct;
@@ -26,12 +30,14 @@ namespace TRMDesktopUI.ViewModels
         private int _itemQuantity;
 
         public SalesViewModel(IProductEndpoint productEndpoint, ISaleEndpoint saleEndpoint, 
-            IConfigHelper configHelper, IMapper mapper)
+            IConfigHelper configHelper, IMapper mapper, StatusInfoViewModel statusInfo, IWindowManager windowManager)
         {
             _productEndpoint = productEndpoint;
             _saleEndpoint = saleEndpoint;
             _configHelper = configHelper;
             _mapper = mapper;
+            _statusInfo = statusInfo;
+            _windowManager = windowManager;
             _cart = new BindingList<CartItemDisplayModel>();
 
             _itemQuantity = 1;
@@ -40,7 +46,35 @@ namespace TRMDesktopUI.ViewModels
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await LoadProducts();
+
+            try
+            {
+                await LoadProducts();
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                _statusInfo.UpdateMessage("Unauthorized Error", "You do not have permission to view the sales page.");
+                await _windowManager.ShowDialogAsync(_statusInfo, null, settings);
+
+                await TryCloseAsync();
+            }
+            catch (Exception ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                _statusInfo.UpdateMessage("Fatal Error", ex.Message);
+                await _windowManager.ShowDialogAsync(_statusInfo, null, settings);
+
+                await TryCloseAsync();
+            }
         }
 
         private async Task LoadProducts()
