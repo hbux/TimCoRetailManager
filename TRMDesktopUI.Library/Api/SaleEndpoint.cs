@@ -22,11 +22,7 @@ namespace TRMDesktopUI.Library.Api
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("api/sale", sale))
             {
-                if (response.IsSuccessStatusCode)
-                {
-
-                }
-                else
+                if (response.IsSuccessStatusCode == false)
                 {
                     throw new Exception(response.ReasonPhrase);
                 }

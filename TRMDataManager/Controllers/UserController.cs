@@ -60,5 +60,44 @@ namespace TRMDataManager.Controllers
 
             return allUsers;
         }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/GetAllRoles")]
+        public Dictionary<string, string> GetAllRoles()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Roles.ToDictionary(x => x.Id, x => x.Name);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/AddUserToRole")]
+        public void AddUserToRole(UserRolePairModel pairing)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                userManager.AddToRole(pairing.UserId, pairing.Role);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [Route("Admin/RemoveUserFromRole")]
+        public void RemoveUserFromRole(UserRolePairModel pairing)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                userManager.RemoveFromRole(pairing.UserId, pairing.Role);
+            }
+        }
     }
 }
