@@ -21,7 +21,7 @@ namespace TRMDataManager.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("EFData", throwIfV1Schema: false)
+            : base("TRMEFData", throwIfV1Schema: false)
         {
         }
         

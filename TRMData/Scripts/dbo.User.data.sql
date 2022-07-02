@@ -1,0 +1,1 @@
+INSERT INTO [dbo].[User] ([Id], [FirstName], [LastName], [EmailAddress], [CreatedDate]) VALUES (N'36b112f0-bf3e-46ea-a096-f7fbee4538fc', N'Harry', N'Buxton', N'b7012116@my.shu.ac.uk', N'2022-07-02 19:20:20')

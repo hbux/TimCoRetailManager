@@ -1,0 +1,6 @@
+SET IDENTITY_INSERT [dbo].[Product] ON
+INSERT INTO [dbo].[Product] ([Id], [ProductName], [Description], [RetailPrice], [QuantityInStock], [CreateDate], [LastModified], [IsTaxable]) VALUES (1, N'Fluffy Bath Towels', N'Large fluffy bath towels made from 95% cotten and 5% polyester. Comes in a pack of 3.', CAST(29.9500 AS Money), 20, N'2022-07-02 20:51:34', N'2022-07-02 20:51:34', 1)
+INSERT INTO [dbo].[Product] ([Id], [ProductName], [Description], [RetailPrice], [QuantityInStock], [CreateDate], [LastModified], [IsTaxable]) VALUES (2, N'10" Skillet', N'A non-stick skillet.', CAST(18.7500 AS Money), 10, N'2022-07-02 20:52:25', N'2022-07-02 20:52:25', 1)
+INSERT INTO [dbo].[Product] ([Id], [ProductName], [Description], [RetailPrice], [QuantityInStock], [CreateDate], [LastModified], [IsTaxable]) VALUES (3, N'Large Toaster Oven', N'A temperature monitored large toaster oven with 4 trays.', CAST(49.9900 AS Money), 5, N'2022-07-02 20:53:30', N'2022-07-02 20:53:30', 1)
+INSERT INTO [dbo].[Product] ([Id], [ProductName], [Description], [RetailPrice], [QuantityInStock], [CreateDate], [LastModified], [IsTaxable]) VALUES (4, N'Home Repair Kit', N'Features multiple different tools required for any job.', CAST(25.0000 AS Money), 50, N'2022-07-02 20:54:19', N'2022-07-02 20:54:19', 1)
+SET IDENTITY_INSERT [dbo].[Product] OFF
