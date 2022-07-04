@@ -16,7 +16,8 @@ Looking for [source code examples](#source-code-examples)? No problem!
     1. [Project folder structure](#project-structure)
     2. [UML Diagram](#uml-diagram)
     3. [User interface showcase](#user-interface)
-4. [Tools and Frameworks Used](#tools-and-frameworks-used)
+4. [Development progress](#development-progress)
+5. [Tools and Frameworks Used](#tools-and-frameworks-used)
 
 ## Task
 
@@ -67,6 +68,39 @@ definiately want to move the system online later down the line, without a WebAPI
 <p float="left">
   <img src="https://github.com/hbux/TimCoRetailManager/blob/main/Documentation/admin_page.png" />
 </p>
+
+## Development Progress
+
+Below is each phase of development, this will include what was done on each phase.
+
+### Phase 1
+
+* Initialised GitHub repository for the project
+* Planned out the project using UML's and user interface diagrams and established goals of the project.
+* Created several .NET Framework projects, including:
+    * UI (WPF)
+    * UI Library (business logic for UI)
+    * Backend API
+    * Backend API Library (business logic for the API)
+    * Data project (houses tables and stored procedures)
+* Created an MVP (minimum viable product) and achieved a working application, allowing users to:
+    * Login to the sales page
+    * Display product data
+    * Add products to basket and calculate sub-totals, tax and totals
+    * Allow users to checkout, saving data to the database
+    * Establish multiple roles; cashier, admin and manager
+    * Admins can execute CRUD functions on each user's roles
+* Transferred from .NET Framework to .NET Core, involving:
+    * Moving the UI, and UI Library to .NET Core
+    * Moving the API and API Library to .NET Core
+
+### Phase 2
+
+No items to currently display
+
+### Phase 3
+
+No items to currently display
 
 ## Tools and Frameworks Used
 
