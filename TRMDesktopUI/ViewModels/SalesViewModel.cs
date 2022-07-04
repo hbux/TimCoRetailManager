@@ -51,7 +51,7 @@ namespace TRMDesktopUI.ViewModels
             {
                 await LoadProducts();
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
                 dynamic settings = new ExpandoObject();
                 settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;

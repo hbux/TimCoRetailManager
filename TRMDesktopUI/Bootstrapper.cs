@@ -75,7 +75,7 @@ namespace TRMDesktopUI
         {
             // Runs this ViewModel on start-up as the base view
             // This is similar to right-clicking a project and 'set project as start-up'
-            DisplayRootViewFor<ShellViewModel>();
+            DisplayRootViewForAsync<ShellViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)
