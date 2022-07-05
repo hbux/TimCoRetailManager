@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -22,14 +23,17 @@ namespace TRMApi.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<UserController> _logger;
         private readonly IUserData _data;
 
         public UserController(ApplicationDbContext context, 
             UserManager<IdentityUser> userManager,
+            ILogger<UserController> logger,
             IUserData data)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
             _data = data;
         }
 
@@ -83,7 +87,13 @@ namespace TRMApi.Controllers
         [Route("Admin/AddUserToRole")]
         public async Task AddUserToRole(UserRolePairModel pairing)
         {
+            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var user = await _userManager.FindByIdAsync(pairing.UserId);
+
+            _logger.LogInformation("Admin {admin} added user {user} to role {role}",
+                loggedInUserId, user.Id, pairing.Role);
+
             await _userManager.AddToRoleAsync(user, pairing.Role);
         }
 
@@ -92,7 +102,13 @@ namespace TRMApi.Controllers
         [Route("Admin/RemoveUserFromRole")]
         public async Task RemoveUserFromRole(UserRolePairModel pairing)
         {
+            string loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var user = await _userManager.FindByIdAsync(pairing.UserId);
+
+            _logger.LogInformation("Admin {admin} added user {user} to role {role}",
+                loggedInUserId, user.Id, pairing.Role);
+
             await _userManager.RemoveFromRoleAsync(user, pairing.Role);
         }
     }
