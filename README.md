@@ -41,7 +41,7 @@ definiately want to move the system online later down the line, without a WebAPI
 ### Project Structure
 * **TRMDesktopUI:** WPF project which holds the user interface pages in a MVVM setup.
 * **TRMDesktopUI.Library:** Holds the UI related helper classes and user interface models.
-* **TRMDataManager:** The API project of the application in a MVC setup.
+* **TRMAPI:** The API project of the application in a MVC setup.
 * **TRMDataManager.Library:** Holds the business logic of the API layer.
 * **TRMData:** Holds the tables, stored procedures and data publisher for the TRM application.
 * **Documentation:** Holds the UML diagrams and any project docs.
@@ -76,7 +76,7 @@ Below is each phase of development, this will include what was done on each phas
 ### Phase 1
 
 * Initialised GitHub repository for the project
-* Planned out the project using UML's and user interface diagrams and established goals of the project.
+* Planned out the project using UML's, user interface diagrams and established goals of the project.
 * Created several .NET Framework projects, including:
     * UI (WPF)
     * UI Library (business logic for UI)
@@ -92,7 +92,7 @@ Below is each phase of development, this will include what was done on each phas
     * Admins can execute CRUD functions on each user's roles
 * Transferred from .NET Framework to .NET Core, involving:
     * Moving the UI, and UI Library to .NET Core
-    * Moving the API and API Library to .NET Core
+    * Unloading the .NET Framework API, creating a new .NET Core API and transferring code to the new API
 
 ### Phase 2
 

@@ -20,17 +20,17 @@ namespace TRMApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private ApplicationDbContext _context;
-        private UserManager<IdentityUser> _userManager;
-        private IConfiguration _config;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserData _data;
 
         public UserController(ApplicationDbContext context, 
             UserManager<IdentityUser> userManager,
-            IConfiguration config)
+            IUserData data)
         {
             _context = context;
             _userManager = userManager;
-            _config = config;
+            _data = data;
         }
 
         [HttpGet]
@@ -38,9 +38,7 @@ namespace TRMApi.Controllers
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            UserData data = new UserData(_config);
-
-            return data.GetUserById(userId).First();
+            return _data.GetUserById(userId).First();
         }
 
         [HttpGet]

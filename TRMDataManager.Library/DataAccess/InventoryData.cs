@@ -9,29 +9,25 @@ using TRMDataManager.Library.Models;
 
 namespace TRMDataManager.Library.DataAccess
 {
-    public class InventoryData
+    public class InventoryData : IInventoryData
     {
-        private IConfiguration _config;
+        private readonly ISqlDataAccess _dataAccess;
 
-        public InventoryData(IConfiguration config)
+        public InventoryData(ISqlDataAccess dataAccess)
         {
-            _config = config;
+            _dataAccess = dataAccess;
         }
 
         public List<InventoryModel> GetInventory()
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-
-            var output = sql.LoadData<InventoryModel, dynamic>("spInventory_GetAll", new { }, "TRMData");
+            var output = _dataAccess.LoadData<InventoryModel, dynamic>("spInventory_GetAll", new { }, "TRMData");
 
             return output;
         }
 
         public void SaveInventoryRecord(InventoryModel item)
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-
-            sql.SaveData<InventoryModel>("spInventory_Insert", item, "TRMData");
+            _dataAccess.SaveData<InventoryModel>("spInventory_Insert", item, "TRMData");
         }
     }
 }

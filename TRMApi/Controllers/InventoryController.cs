@@ -13,29 +13,25 @@ namespace TRMApi.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private IConfiguration _config;
+        private readonly IInventoryData _data;
 
-        public InventoryController(IConfiguration config)
+        public InventoryController(IInventoryData data)
         {
-            _config = config;
+            _data = data;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin,Manager")]
         public List<InventoryModel> Get()
         {
-            InventoryData data = new InventoryData(_config);
-
-            return data.GetInventory();
+            return _data.GetInventory();
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public void Post(InventoryModel item)
         {
-            InventoryData data = new InventoryData(_config);
-
-            data.SaveInventoryRecord(item);
+            _data.SaveInventoryRecord(item);
         }
     }
 }
